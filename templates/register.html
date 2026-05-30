@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Регистрация - Книжная сеть "Планета"{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-container {
+        max-width: 500px;
+        margin: 3rem auto;
+    }
+
+    .auth-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        padding: 2.5rem;
+        box-shadow: var(--card-shadow);
+    }
+
+    .auth-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .auth-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: var(--primary-gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 2rem;
+        color: white;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-secondary);
+    }
+
+    .form-group-icon {
+        position: relative;
+    }
+
+    .form-group-icon .form-control {
+        padding-left: 3rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-icon">
+                <i class="bi bi-person-plus"></i>
+            </div>
+            <h2 class="gradient-text">Регистрация</h2>
+            <p class="text-muted">Создайте новый аккаунт</p>
+        </div>
+        <form method="POST">
+            <div class="mb-3 form-group-icon">
+                <i class="bi bi-envelope input-icon"></i>
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required placeholder="your@email.com">
+            </div>
+            <div class="mb-3 form-group-icon">
+                <i class="bi bi-lock input-icon"></i>
+                <label for="password" class="form-label">Пароль</label>
+                <input type="password" class="form-control" id="password" name="password" required placeholder="••••••••">
+            </div>
+            <div class="mb-3 form-group-icon">
+                <i class="bi bi-person input-icon"></i>
+                <label for="fio" class="form-label">ФИО</label>
+                <input type="text" class="form-control" id="fio" name="fio" required placeholder="Иванов Иван Иванович">
+            </div>
+            <div class="mb-3 form-group-icon">
+                <i class="bi bi-telephone input-icon"></i>
+                <label for="phone" class="form-label">Телефон</label>
+                <input type="tel" class="form-control" id="phone" name="phone" placeholder="+7 (999) 123-45-67">
+            </div>
+            <button type="submit" class="btn btn-primary w-100 btn-lg mb-3">
+                <i class="bi bi-person-plus me-2"></i>Зарегистрироваться
+            </button>
+            <div class="text-center">
+                <p class="text-muted mb-0">Уже есть аккаунт? <a href="{{ url_for('login') }}" class="text-decoration-none">Войдите</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

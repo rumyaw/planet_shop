@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}Профиль - Книжная сеть "Планета"{% endblock %}
+
+{% block extra_css %}
+<style>
+    .profile-header {
+        background: var(--primary-gradient);
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        color: #ffffff;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .profile-header h2,
+    .profile-header p,
+    .profile-header .profile-avatar,
+    .profile-header .profile-avatar i {
+        color: #ffffff !important;
+    }
+
+    .profile-header p {
+        opacity: 0.9;
+    }
+
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        font-size: 3rem;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .info-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .info-label {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.5rem;
+    }
+
+    .info-value {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .action-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+    }
+
+    .action-btn {
+        width: 100%;
+        margin-bottom: 0.75rem;
+        padding: 1rem;
+        border-radius: 12px;
+        text-align: left;
+        transition: var(--transition);
+    }
+
+    .action-btn:hover {
+        background: var(--bg-secondary);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profile-header">
+    <div class="profile-avatar">
+        <i class="bi bi-person-circle"></i>
+    </div>
+    <h2>{{ current_user.fio }}</h2>
+    <p class="mb-0">{{ current_user.email }}</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-person-gear me-2"></i>Информация о пользователе
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('update_profile') }}">
+                    <div class="info-card">
+                        <div class="info-label">
+                            <i class="bi bi-envelope me-1"></i>Email
+                        </div>
+                        <div class="info-value">{{ current_user.email }}</div>
+                        <small class="text-muted">Email нельзя изменить</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fio" class="form-label">
+                            <i class="bi bi-person me-2"></i>ФИО
+                        </label>
+                        <input type="text" class="form-control" id="fio" name="fio" value="{{ current_user.fio }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">
+                            <i class="bi bi-telephone me-2"></i>Телефон
+                        </label>
+                        <input type="tel" class="form-control" id="phone" name="phone" value="{{ current_user.phone or '' }}">
+                    </div>
+                    <div class="info-card">
+                        <div class="info-label">
+                            <i class="bi bi-shield-check me-1"></i>Роль
+                        </div>
+                        <div class="info-value">
+                            {% if current_user.is_admin() %}
+                            <span class="badge bg-danger">Администратор</span>
+                            {% else %}
+                            <span class="badge bg-secondary">Пользователь</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-label">
+                            <i class="bi bi-calendar me-1"></i>Дата регистрации
+                        </div>
+                        <div class="info-value">{{ current_user.created_at.strftime('%d.%m.%Y %H:%M') }}</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="bi bi-check-circle me-2"></i>Сохранить изменения
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="action-card">
+            <h5 class="mb-3">
+                <i class="bi bi-lightning-charge me-2"></i>Быстрые действия
+            </h5>
+            <a href="{{ url_for('orders') }}" class="btn btn-secondary action-btn">
+                <i class="bi bi-receipt me-2"></i>Мои заказы
+            </a>
+            <a href="{{ url_for('cart') }}" class="btn btn-secondary action-btn">
+                <i class="bi bi-cart3 me-2"></i>Корзина
+            </a>
+            <a href="{{ url_for('catalog') }}" class="btn btn-secondary action-btn">
+                <i class="bi bi-grid me-2"></i>Каталог
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

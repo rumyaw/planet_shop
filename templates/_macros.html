@@ -1,0 +1,40 @@
+{#
+  Стилизованный загрузчик изображения товара (drag & drop + превью).
+  Использование:
+      {% from "_macros.html" import image_uploader %}
+      {{ image_uploader(product.image_src) }}   {# current_src = None при добавлении #}
+
+  Поля формы, которые отправляются на сервер:
+      image        — файл изображения (multipart/form-data)
+      remove_image — "1", если текущее изображение нужно удалить
+  Форма обязательно должна иметь enctype="multipart/form-data".
+#}
+{% macro image_uploader(current_src=None) %}
+<div class="image-uploader" data-image-uploader>
+    <div class="image-uploader__preview {% if current_src %}is-visible{% endif %}" data-preview>
+        <span class="image-uploader__badge" data-badge>
+            {% if current_src %}Текущее изображение{% else %}Предпросмотр{% endif %}
+        </span>
+        <div class="image-uploader__actions">
+            <button type="button" class="image-uploader__action image-uploader__action--replace" data-replace>
+                <i class="bi bi-arrow-repeat"></i> Заменить
+            </button>
+            <button type="button" class="image-uploader__action image-uploader__action--remove" data-remove>
+                <i class="bi bi-trash"></i> Удалить
+            </button>
+        </div>
+        <img data-preview-img src="{{ current_src or '' }}" alt="Превью изображения товара">
+    </div>
+
+    <label class="image-uploader__dropzone {% if current_src %}d-none{% endif %}" data-dropzone>
+        <span class="image-uploader__icon"><i class="bi bi-cloud-arrow-up"></i></span>
+        <span class="image-uploader__title">Перетащите фото сюда или нажмите для выбора</span>
+        <span class="image-uploader__subtitle">PNG, JPG, JPEG, WEBP, GIF — до 8 МБ</span>
+        <input type="file" name="image" accept="image/png,image/jpeg,image/webp,image/gif"
+               class="image-uploader__input" data-input>
+    </label>
+
+    <input type="hidden" name="remove_image" value="0" data-remove-flag>
+    <p class="image-uploader__filename d-none" data-filename></p>
+</div>
+{% endmacro %}

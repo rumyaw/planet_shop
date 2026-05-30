@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Добавить товар - Админ-панель{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="gradient-text mb-0">
+        <i class="bi bi-plus-circle me-2"></i>Добавить товар
+    </h1>
+    <a href="{{ url_for('admin_products') }}" class="btn btn-secondary">
+        <i class="bi bi-arrow-left me-2"></i>Назад
+    </a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-xl-7">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-info-circle me-2"></i>Информация о товаре
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="article" class="form-label">
+                            <i class="bi bi-upc me-2"></i>Артикул
+                        </label>
+                        <input type="text" class="form-control" id="article" name="article" required placeholder="BOOK-001">
+                    </div>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">
+                            <i class="bi bi-box-seam me-2"></i>Название товара
+                        </label>
+                        <input type="text" class="form-control" id="name" name="name" required placeholder="Введите название">
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">
+                            <i class="bi bi-file-text me-2"></i>Описание
+                        </label>
+                        <textarea class="form-control" id="description" name="description" rows="5" placeholder="Введите описание товара"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="image_url" class="form-label">
+                            <i class="bi bi-image me-2"></i>URL изображения
+                        </label>
+                        <input type="url" class="form-control" id="image_url" name="image_url" placeholder="https://example.com/image.jpg">
+                        <small class="text-muted">Ссылка на изображение товара</small>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="price" class="form-label">
+                                    <i class="bi bi-currency-exchange me-2"></i>Цена (₽)
+                                </label>
+                                <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" required placeholder="0.00">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="stock_quantity" class="form-label">
+                                    <i class="bi bi-box me-2"></i>Количество на складе
+                                </label>
+                                <input type="number" class="form-control" id="stock_quantity" name="stock_quantity" min="0" value="0" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="category_id" class="form-label">
+                                    <i class="bi bi-tags me-2"></i>Категория
+                                </label>
+                                <select class="form-select" id="category_id" name="category_id" required>
+                                    <option value="">Выберите категорию</option>
+                                    {% for category in categories %}
+                                    <option value="{{ category.id }}">{{ category.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle me-2"></i>Добавить
+                        </button>
+                        <a href="{{ url_for('admin_products') }}" class="btn btn-secondary">Отмена</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

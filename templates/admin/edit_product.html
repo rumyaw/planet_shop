@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% from "_macros.html" import image_uploader %}
+
+{% block title %}Редактировать товар - Админ-панель{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="gradient-text mb-0">
+        <i class="bi bi-pencil me-2"></i>Редактировать товар
+    </h1>
+    <a href="{{ url_for('admin_products') }}" class="btn btn-secondary">
+        <i class="bi bi-arrow-left me-2"></i>Назад
+    </a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-10 col-xl-9">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-info-circle me-2"></i>Информация о товаре
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="article" class="form-label">
+                            <i class="bi bi-upc me-2"></i>Артикул
+                        </label>
+                        <input type="text" class="form-control" id="article" name="article" value="{{ product.article }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">
+                            <i class="bi bi-box-seam me-2"></i>Название товара
+                        </label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ product.name }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">
+                            <i class="bi bi-file-text me-2"></i>Описание
+                        </label>
+                        <textarea class="form-control" id="description" name="description" rows="5">{{ product.description or '' }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="bi bi-image me-2"></i>Изображение товара
+                        </label>
+                        {{ image_uploader(product.image_src) }}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="price" class="form-label">
+                                    <i class="bi bi-currency-exchange me-2"></i>Цена (₽)
+                                </label>
+                                <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" value="{{ product.price }}" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="stock_quantity" class="form-label">
+                                    <i class="bi bi-box me-2"></i>Количество на складе
+                                </label>
+                                <input type="number" class="form-control" id="stock_quantity" name="stock_quantity" min="0" value="{{ product.stock_quantity }}" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="category_id" class="form-label">
+                                    <i class="bi bi-tags me-2"></i>Категория
+                                </label>
+                                <select class="form-select" id="category_id" name="category_id" required>
+                                    {% for category in categories %}
+                                    <option value="{{ category.id }}" {% if product.category_id == category.id %}selected{% endif %}>
+                                        {{ category.name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle me-2"></i>Сохранить
+                        </button>
+                        <a href="{{ url_for('admin_products') }}" class="btn btn-secondary">Отмена</a>
+                    </div>
+                </form>
+
+                <hr class="my-4">
+                <form action="{{ url_for('admin_delete_product', product_id=product.id) }}" method="POST"
+                      onsubmit="return confirm('Вы уверены, что хотите удалить этот товар?');">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash me-2"></i>Удалить товар
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

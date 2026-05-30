@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Добавить категорию - Админ-панель{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="gradient-text mb-0">
+        <i class="bi bi-plus-circle me-2"></i>Добавить категорию
+    </h1>
+    <a href="{{ url_for('admin_categories') }}" class="btn btn-secondary">
+        <i class="bi bi-arrow-left me-2"></i>Назад
+    </a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-6 col-xl-5">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-info-circle me-2"></i>Информация о категории
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">
+                            <i class="bi bi-tag me-2"></i>Название категории
+                        </label>
+                        <input type="text" class="form-control" id="name" name="name" required placeholder="Введите название">
+                    </div>
+                    <div class="mb-3">
+                        <label for="parent_id" class="form-label">
+                            <i class="bi bi-diagram-3 me-2"></i>Родительская категория
+                        </label>
+                        <select class="form-select" id="parent_id" name="parent_id">
+                            <option value="">Нет (основная категория)</option>
+                            {% for cat in categories %}
+                            <option value="{{ cat.id }}">{{ cat.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <small class="text-muted">Оставьте пустым для создания основной категории</small>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle me-2"></i>Добавить
+                        </button>
+                        <a href="{{ url_for('admin_categories') }}" class="btn btn-secondary">Отмена</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

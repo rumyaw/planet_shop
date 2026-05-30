@@ -1,0 +1,220 @@
+/* ==========================================================================
+   Локальные шрифты Inter (используются на сайте и для генерации PDF)
+   ========================================================================== */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/Inter-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('../fonts/Inter-Medium.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('../fonts/Inter-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('../fonts/Inter-Bold.ttf') format('truetype');
+}
+
+/* ==========================================================================
+   Компонент загрузки изображения товара (drag & drop + превью)
+   ========================================================================== */
+.image-uploader {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.image-uploader__dropzone {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 0.5rem;
+    min-height: 200px;
+    padding: 2rem 1.5rem;
+    border: 2px dashed var(--border-color);
+    border-radius: 18px;
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.image-uploader__dropzone:hover {
+    border-color: #667eea;
+    background: var(--bg-card);
+}
+
+.image-uploader__dropzone.is-dragover {
+    border-color: #667eea;
+    background: rgba(102, 126, 234, 0.08);
+    transform: scale(1.01);
+}
+
+.image-uploader__icon {
+    font-size: 2.8rem;
+    line-height: 1;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.image-uploader__title {
+    font-weight: 600;
+    color: var(--text-primary) !important;
+}
+
+.image-uploader__subtitle {
+    font-size: 0.85rem;
+    color: var(--text-secondary) !important;
+}
+
+.image-uploader__input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Карточка превью (текущее или выбранное изображение) */
+.image-uploader__preview {
+    position: relative;
+    display: none;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    box-shadow: var(--card-shadow);
+}
+
+.image-uploader__preview.is-visible {
+    display: block;
+}
+
+.image-uploader__preview img {
+    display: block;
+    width: 100%;
+    max-height: 340px;
+    object-fit: contain;
+    background:
+        repeating-conic-gradient(var(--border-color) 0% 25%, transparent 0% 50%) 50% / 22px 22px;
+}
+
+.image-uploader__badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.image-uploader__actions {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.image-uploader__action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: none;
+    border-radius: 12px;
+    padding: 0.5rem 0.9rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    transition: var(--transition);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.image-uploader__action--replace {
+    background: rgba(102, 126, 234, 0.85);
+}
+
+.image-uploader__action--remove {
+    background: rgba(245, 87, 108, 0.9);
+}
+
+.image-uploader__action:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.05);
+}
+
+.image-uploader__filename {
+    font-size: 0.85rem;
+    color: var(--text-secondary) !important;
+    word-break: break-all;
+}
+
+/* Маленькая миниатюра в таблице товаров админки */
+.product-thumb {
+    width: 52px;
+    height: 64px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+}
+
+.product-thumb-placeholder {
+    width: 52px;
+    height: 64px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 1.3rem;
+}
+
+/* ==========================================================================
+   Шапка «Опасная зона» (bg-danger): белый текст и иконка в любой теме.
+   Перебивает базовое правило .card-header { color: var(--text-primary) }.
+   ========================================================================== */
+.card-header.bg-danger,
+.card-header.bg-danger h1,
+.card-header.bg-danger h2,
+.card-header.bg-danger h3,
+.card-header.bg-danger h4,
+.card-header.bg-danger h5,
+.card-header.bg-danger h6,
+.card-header.bg-danger i {
+    color: #ffffff !important;
+}

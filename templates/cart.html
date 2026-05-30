@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+
+{% block title %}Корзина - Книжная сеть "Планета"{% endblock %}
+
+{% block extra_css %}
+<style>
+    .cart-item-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        transition: var(--transition);
+    }
+
+    .cart-item-card:hover {
+        box-shadow: var(--card-shadow);
+    }
+
+    .quantity-input {
+        width: 80px;
+        text-align: center;
+        border-radius: 12px;
+    }
+
+    .summary-card {
+        background: var(--primary-gradient) !important;
+        color: white !important;
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        position: sticky;
+        top: 100px;
+    }
+
+    /* Принудительно делаем весь текст белым внутри summary-card */
+    .summary-card,
+    .summary-card *:not(.btn-light),
+    .summary-card h1,
+    .summary-card h2,
+    .summary-card h3,
+    .summary-card h4,
+    .summary-card h5,
+    .summary-card h6,
+    .summary-card span,
+    .summary-card div:not(.btn-light),
+    .summary-card p,
+    .summary-card i,
+    .summary-card .bi,
+    .summary-card .d-flex span {
+        color: white !important;
+    }
+    
+    /* Убеждаемся, что все элементы внутри summary-card имеют белый цвет */
+    .summary-card .h3,
+    .summary-card .h4,
+    .summary-card .mb-4,
+    .summary-card .mb-0,
+    .summary-card .d-flex span,
+    .summary-card .d-flex .h3 {
+        color: white !important;
+    }
+    
+    [data-theme="light"] .summary-card h4,
+    [data-theme="light"] .summary-card h3,
+    [data-theme="light"] .summary-card .h3,
+    [data-theme="light"] .summary-card .h4,
+    [data-theme="light"] .summary-card span,
+    [data-theme="light"] .summary-card div:not(.btn-light),
+    [data-theme="light"] .summary-card i,
+    [data-theme="light"] .summary-card .d-flex span {
+        color: white !important;
+    }
+    
+    [data-theme="dark"] .summary-card h4,
+    [data-theme="dark"] .summary-card h3,
+    [data-theme="dark"] .summary-card .h3,
+    [data-theme="dark"] .summary-card .h4,
+    [data-theme="dark"] .summary-card span,
+    [data-theme="dark"] .summary-card div:not(.btn-light),
+    [data-theme="dark"] .summary-card i,
+    [data-theme="dark"] .summary-card .d-flex span {
+        color: white !important;
+    }
+
+    .summary-card .btn-light {
+        background: rgba(255, 255, 255, 0.2) !important;
+        color: #ffffff !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    }
+
+    .summary-card .btn-light:hover {
+        background: rgba(255, 255, 255, 0.3) !important;
+        color: #ffffff !important;
+    }
+
+    [data-theme="dark"] .summary-card .btn-light {
+        background: rgba(255, 255, 255, 0.15) !important;
+        color: #ffffff !important;
+    }
+
+    .empty-cart {
+        text-align: center;
+        padding: 4rem 2rem;
+    }
+
+    .empty-cart-icon {
+        font-size: 5rem;
+        opacity: 0.3;
+        margin-bottom: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="gradient-text mb-0">
+        <i class="bi bi-cart3 me-2"></i>Корзина
+    </h1>
+</div>
+
+{% if cart.items %}
+<div class="row g-4">
+    <div class="col-lg-8">
+        {% for item in cart.items %}
+        <div class="cart-item-card">
+            <div class="row align-items-center">
+                <div class="col-md-5">
+                    <h5 class="mb-1">{{ item.product.name }}</h5>
+                    <p class="text-muted small mb-0">
+                        <i class="bi bi-upc me-1"></i>{{ item.product.article }}
+                    </p>
+                </div>
+                <div class="col-md-2 text-center">
+                    <span class="h6 mb-0">{{ item.price_at_add }} ₽</span>
+                </div>
+                <div class="col-md-3">
+                    <form method="POST" action="{{ url_for('update_cart_item', item_id=item.id) }}" class="d-flex gap-2">
+                        <input type="number" class="form-control quantity-input" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.stock_quantity }}" required>
+                        <button type="submit" class="btn btn-sm btn-primary">
+                            <i class="bi bi-check"></i>
+                        </button>
+                    </form>
+                </div>
+                <div class="col-md-2 text-end">
+                    <div class="d-flex justify-content-end gap-2">
+                        <span class="h6 mb-0">{{ item.get_subtotal() }} ₽</span>
+                        <form method="POST" action="{{ url_for('remove_from_cart', item_id=item.id) }}" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="mt-3">
+            <a href="{{ url_for('catalog') }}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left me-2"></i>Продолжить покупки
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="summary-card">
+            <h4 class="mb-4">
+                <i class="bi bi-receipt me-2"></i>Итого
+            </h4>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <span>Общая сумма:</span>
+                <span class="h3 mb-0">{{ cart.get_total() }} ₽</span>
+            </div>
+            <form method="POST" action="{{ url_for('checkout') }}">
+                <button type="submit" class="btn btn-light w-100 btn-lg">
+                    <i class="bi bi-bag-check me-2"></i>Оформить заказ
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="card">
+    <div class="card-body empty-cart">
+        <i class="bi bi-cart-x empty-cart-icon"></i>
+        <h3>Корзина пуста</h3>
+        <p class="text-muted mb-4">Добавьте товары из каталога в корзину</p>
+        <a href="{{ url_for('catalog') }}" class="btn btn-primary btn-lg">
+            <i class="bi bi-arrow-right-circle me-2"></i>Перейти в каталог
+        </a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
